@@ -1,20 +1,25 @@
 import React, { MouseEvent } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { brushColorAtom, canBrushSelector, canEraseSelector, currentPixelAtom, pixelColor, erasePixelsWithinAreaSelector, presetColorsAtom, pixelOpacity, prevPixelColor } from "state";
+import { brushColorAtom, canBrushSelector, canEraseSelector, currentPixelAtom, pixelColor, erasePixelsWithinAreaSelector, presetColorsAtom, pixelOpacity, prevPixelColor, canFillSelector, fillSelector } from "state";
 import './Pixel.scss'
 
 export const Pixel = ({id}: {id: string}) => {
+  const setCurrentPixel = useSetRecoilState(currentPixelAtom)
   const [color, setColor] = useRecoilState(pixelColor(id))
   const [prevColor, setPrevColor] = useRecoilState(prevPixelColor(id))
-  const setCurrentPixel = useSetRecoilState(currentPixelAtom)
   const [opacity, setOpacity] = useRecoilState(pixelOpacity(id))
   const brushColor = useRecoilValue(brushColorAtom)
   const canBrush = useRecoilValue(canBrushSelector)
   const canErase = useRecoilValue(canEraseSelector)
+  const canFill = useRecoilValue(canFillSelector)
   const setPresetColors = useSetRecoilState(presetColorsAtom)
   const setErasePixels = useSetRecoilState(erasePixelsWithinAreaSelector)
+  const setFill = useSetRecoilState(fillSelector)
 
   const colorPixel = () => {
+    if (canFill) {
+      setFill(brushColor)
+    }
     if (canBrush) {
       setColor(brushColor)
       setOpacity(1)
@@ -52,30 +57,26 @@ export const Pixel = ({id}: {id: string}) => {
   }
 
   const handleMouseEnter = (e: MouseEvent<HTMLDivElement>) => {
-    if (!(canBrush || canErase)) return
+    setCurrentPixel(id)
     e.stopPropagation()
     const mouseDown = e.buttons === 1
-    setCurrentPixel(id)
     // if left mouse button is clicked
     if (mouseDown) {
       colorPixel()
-    } else 
-    // if no buttons are clicked
-    {
+    } else { // if no buttons are clicked
       hoverPixel()
     }
   }
 
   const handleMouseLeave = (e: MouseEvent<HTMLDivElement>) => {
-    if (!(canBrush || canErase)) return
     const mouseDown = e.buttons === 1
     if (canBrush) {
       const newColor = mouseDown ? brushColor : prevColor
       setColor(newColor)
     }
-    // if (mouseDown) {
-    setErasePixels({mouseDown, mouseLeave: true})
-    // }
+    if (canErase) {
+      setErasePixels({mouseDown, mouseLeave: true})
+    }
     setOpacity(1)
   }
 

@@ -12,7 +12,7 @@ export const rowsAtom = atom({
 
 export const showGridAtom = atom({
   key: 'showGridAtom',
-  default: true,
+  default: false,
 })
 
 export const pixelIdsSelector = selector({

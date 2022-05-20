@@ -1,7 +1,7 @@
 import React from "react";
-import { faArrowPointer, faEraser, faEye, faEyeSlash, faFill, faPaintbrush, IconDefinition } from "@fortawesome/free-solid-svg-icons";
+import { faEraser, faEye, faEyeSlash, faFill, faPaintbrush, IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { selectedTool, showGridAtom } from "state";
 import { Button } from 'components';
 import { Tool } from "typings";
@@ -9,20 +9,16 @@ import './ToolSelection.scss'
 
 const tools: {label: Tool; icon: IconDefinition}[] = [
   {
-    label: 'pointer',
-    icon: faArrowPointer,
-  },
-  {
     label: 'brush',
     icon: faPaintbrush,
   },
   {
-    label: 'fill',
-    icon: faFill,
-  },
-  {
     label: 'eraser',
     icon: faEraser,
+  },
+  {
+    label: 'fill',
+    icon: faFill,
   },
 ]
 

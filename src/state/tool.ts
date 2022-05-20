@@ -5,7 +5,7 @@ import { currentPixelAtom, pixelColor, pixelOpacity, prevPixelColor } from "./pi
 
 export const selectedTool = atom<Tool>({
   key: 'selectedToolAtom',
-  default: 'pointer'
+  default: 'brush'
 })
 
 export const brushColorAtom = atom({
@@ -31,6 +31,13 @@ export const canEraseSelector = selector({
   get: ({ get }) => {
     const tool = get(selectedTool)
     return tool === "eraser"
+  }
+})
+export const canFillSelector = selector({
+  key: 'canFillSelector',
+  get: ({ get }) => {
+    const tool = get(selectedTool)
+    return tool === "fill"
   }
 })
 
@@ -85,19 +92,31 @@ export const erasePixelsWithinAreaSelector = selector<{mouseDown: boolean; mouse
     if (mouse instanceof DefaultValue) return
     const ids = get(pixelIdsWithinAreaSelector)
     ids.forEach(id => {
-      // const prevColor = get(prevPixelColor(id))
       const color = get(pixelColor(id))
       if (mouse.mouseDown) {
         set(prevPixelColor(id), color)
         set(pixelColor(id), '#ffffff')
         set(pixelOpacity(id), 1)
       } else {
-        if (mouse.mouseLeave) {
-          set(pixelOpacity(id), 1)
-        } else {
-          set(pixelOpacity(id), 0.5)
-        }
+        set(pixelOpacity(id), mouse.mouseLeave ? 1 : 0.5)
       }
+    })
+  }
+})
+
+export const fillSelector = selector({
+  key: 'fillSelector',
+  get: () => '',
+  set: ({get, set}, newColor) => {
+    const ids = get(pixelIdsSelector)
+    const currentPixel = get(currentPixelAtom)
+    const currentColor = get(pixelColor(currentPixel))
+    const coloredPixels = ids.filter(id => {
+      const color = get(pixelColor(id))
+      return color === currentColor
+    })
+    coloredPixels.forEach(id => {
+      set(pixelColor(id), newColor)
     })
   }
 })

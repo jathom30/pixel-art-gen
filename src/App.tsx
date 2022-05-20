@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Artboard, BrushPanel, EraserPanel, ToolSelection } from 'components';
+import { Artboard, BrushPanel, EraserPanel, FillPanel, ToolSelection } from 'components';
 import './App.scss';
 import { useRecoilValue } from 'recoil';
 import { selectedTool } from 'state';
@@ -18,6 +18,7 @@ function App() {
         <Artboard />
       </div>
       <div className='App__panel App__panel--right'>
+        {tool === 'fill' && <FillPanel />}
         {tool === 'brush' && <BrushPanel />}
         {tool === 'eraser' && <EraserPanel />}
       </div>
