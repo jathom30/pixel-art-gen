@@ -1,0 +1,18 @@
+.App {
+  display: flex;
+  height: 100vh;
+  &__panel {
+    background: white;
+    display: flex;
+    &--left {
+      border-right: 1px solid grey;
+    }
+    &--right {
+      border-left: 1px solid grey;
+    }
+  }
+  &__artboard {
+    background: lightgrey;
+    flex-grow: 1;
+  }
+}

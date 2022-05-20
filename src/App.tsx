@@ -1,24 +1,26 @@
+
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Artboard, BrushPanel, EraserPanel, ToolSelection } from 'components';
+import './App.scss';
+import { useRecoilValue } from 'recoil';
+import { selectedTool } from 'state';
+
 
 function App() {
+  const tool = useRecoilValue(selectedTool)
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className='App__panel App__panel--left'>
+        <ToolSelection />
+      </div>
+      <div className="App__artboard">
+        <Artboard />
+      </div>
+      <div className='App__panel App__panel--right'>
+        {tool === 'brush' && <BrushPanel />}
+        {tool === 'eraser' && <EraserPanel />}
+      </div>
     </div>
   );
 }
