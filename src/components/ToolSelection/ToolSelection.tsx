@@ -1,5 +1,5 @@
 import React from "react";
-import { faDownload, faEraser, faEye, faEyeSlash, faFill, faPaintbrush, IconDefinition } from "@fortawesome/free-solid-svg-icons";
+import { faDownload, faEraser, faEye, faEyeSlash, faFill, faMagnifyingGlass, faPaintbrush, IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { saveImageAtom, selectedTool, showGridAtom } from "state";
@@ -19,6 +19,10 @@ const tools: {label: Tool; icon: IconDefinition}[] = [
   {
     label: 'fill',
     icon: faFill,
+  },
+  {
+    label: 'zoom',
+    icon: faMagnifyingGlass,
   },
 ]
 

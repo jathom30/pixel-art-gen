@@ -4,6 +4,7 @@ import { Artboard, BrushPanel, EraserPanel, FillPanel, ToolSelection } from 'com
 import './App.scss';
 import { useRecoilValue } from 'recoil';
 import { selectedTool } from 'state';
+import { ZoomArea } from 'components/ZoomArea';
 
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
         {tool === 'fill' && <FillPanel />}
         {tool === 'brush' && <BrushPanel />}
         {tool === 'eraser' && <EraserPanel />}
+        {tool === 'zoom' && <ZoomArea />}
       </div>
     </div>
   );

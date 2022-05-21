@@ -1,4 +1,4 @@
-import { atom, DefaultValue, selector } from "recoil";
+import { atom, DefaultValue, selector, selectorFamily } from "recoil";
 import { Tool } from "typings";
 import { columnsAtom, pixelIdsSelector, rowsAtom } from "./artboard";
 import { currentPixelAtom, pixelColor, pixelOpacity, prevPixelColor } from "./pixel";
@@ -41,20 +41,29 @@ export const canFillSelector = selector({
   }
 })
 
+export const canZoomSelector = selector({
+  key: 'canZoomSelector',
+  get: ({ get }) => {
+    const tool = get(selectedTool)
+    return tool === "zoom"
+  }
+})
+
 export const eraserSizeAtom = atom({
   key: 'eraserSizeAtom',
   default: 5,
 })
 
-export const pixelIdsWithinAreaSelector = selector({
+export const pixelIdsWithinAreaSelector = selectorFamily<string[], 'eraser' | 'zoom'>({
   key: 'pixelIdsWithinAreaSelector',
-  get: ({ get }) => {
+  get: (id) => ({ get }) => {
     const currentPixelId = get(currentPixelAtom)
     const pixelIds = get(pixelIdsSelector)
     const cols = get(columnsAtom)
     const rows = get(rowsAtom)
     const eraserSize = get(eraserSizeAtom)
-    const radius = Math.floor(eraserSize / 2)
+    // if radius is for eraser, use eraser size. otherwise, use set radius for zoom area
+    const radius = id === 'eraser' ? Math.floor(eraserSize / 2) : 2
 
     const pixelIndex = pixelIds.findIndex(id => id === currentPixelId)
     const pixelRow = Math.floor(pixelIndex / rows)
@@ -90,7 +99,7 @@ export const erasePixelsWithinAreaSelector = selector<{mouseDown: boolean; mouse
     const canErase = get(canEraseSelector)
     if (!canErase) return
     if (mouse instanceof DefaultValue) return
-    const ids = get(pixelIdsWithinAreaSelector)
+    const ids = get(pixelIdsWithinAreaSelector('eraser'))
     ids.forEach(id => {
       const color = get(pixelColor(id))
       if (mouse.mouseDown) {
@@ -100,6 +109,20 @@ export const erasePixelsWithinAreaSelector = selector<{mouseDown: boolean; mouse
       } else {
         set(pixelOpacity(id), mouse.mouseLeave ? 1 : 0.5)
       }
+    })
+  }
+})
+
+export const highlightPixelsWithinAreaSelector = selector<{mouseLeave: boolean}>({
+  key: 'highlightPixelsWithinAreaSelector',
+  get: () => ({mouseLeave: true}),
+  set: ({ get, set }, mouse) => {
+    const canZoom = get(canZoomSelector)
+    if (!canZoom) return
+    if (mouse instanceof DefaultValue) return
+    const ids = get(pixelIdsWithinAreaSelector('zoom'))
+    ids.forEach(id => {
+      set(pixelOpacity(id), mouse.mouseLeave ? 1 : 0.5)
     })
   }
 })

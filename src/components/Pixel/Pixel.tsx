@@ -1,6 +1,6 @@
 import React, { MouseEvent } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { brushColorAtom, canBrushSelector, canEraseSelector, currentPixelAtom, pixelColor, erasePixelsWithinAreaSelector, presetColorsAtom, pixelOpacity, prevPixelColor, canFillSelector, fillSelector } from "state";
+import { brushColorAtom, canBrushSelector, canEraseSelector, currentPixelAtom, pixelColor, erasePixelsWithinAreaSelector, presetColorsAtom, pixelOpacity, prevPixelColor, canFillSelector, fillSelector, highlightPixelsWithinAreaSelector, canZoomSelector } from "state";
 import './Pixel.scss'
 
 export const Pixel = ({id}: {id: string}) => {
@@ -12,8 +12,10 @@ export const Pixel = ({id}: {id: string}) => {
   const canBrush = useRecoilValue(canBrushSelector)
   const canErase = useRecoilValue(canEraseSelector)
   const canFill = useRecoilValue(canFillSelector)
+  const canZoom = useRecoilValue(canZoomSelector)
   const setPresetColors = useSetRecoilState(presetColorsAtom)
   const setErasePixels = useSetRecoilState(erasePixelsWithinAreaSelector)
+  const setHighlightPixels = useSetRecoilState(highlightPixelsWithinAreaSelector)
   const setFill = useSetRecoilState(fillSelector)
 
   const colorPixel = () => {
@@ -37,6 +39,9 @@ export const Pixel = ({id}: {id: string}) => {
   }
 
   const hoverPixel = () => {
+    if (canZoom) {
+      setHighlightPixels({mouseLeave: false})
+    }
     if (canBrush) {
       setColor(brushColor)
       setOpacity(0.5)
@@ -76,6 +81,9 @@ export const Pixel = ({id}: {id: string}) => {
     }
     if (canErase) {
       setErasePixels({mouseDown, mouseLeave: true})
+    }
+    if (canZoom) {
+      setHighlightPixels({mouseLeave: true})
     }
     setOpacity(1)
   }
