@@ -1,7 +1,7 @@
 import { atom, DefaultValue, selector, selectorFamily } from "recoil";
 import { recoilPersist } from "recoil-persist";
 import { Tool } from "typings";
-import { columnsAtom, pixelIdsSelector, rowsAtom } from "./artboard";
+import { columnsAtom, currentArtboardAtom, pixelIdsSelector, rowsAtom } from "./artboard";
 import { currentPixelAtom, pixelColor, pixelOpacity, prevPixelColor } from "./pixel";
 
 const { persistAtom } = recoilPersist()
@@ -65,7 +65,8 @@ export const pixelIdsWithinAreaSelector = selectorFamily<string[], 'eraser' | 'z
   key: 'pixelIdsWithinAreaSelector',
   get: (id) => ({ get }) => {
     const currentPixelId = get(currentPixelAtom)
-    const pixelIds = get(pixelIdsSelector)
+    const currentArtboardId = get(currentArtboardAtom)
+    const pixelIds = get(pixelIdsSelector(currentArtboardId))
     const cols = get(columnsAtom)
     const rows = get(rowsAtom)
     const eraserSize = get(eraserSizeAtom)
@@ -138,7 +139,8 @@ export const fillSelector = selector({
   key: 'fillSelector',
   get: () => '',
   set: ({get, set}, newColor) => {
-    const ids = get(pixelIdsSelector)
+    const currentArtboardId = get(currentArtboardAtom)
+    const ids = get(pixelIdsSelector(currentArtboardId))
     const currentPixelId = get(currentPixelAtom)
     const currentColor = get(pixelColor(currentPixelId))
     const coloredPixels = ids.filter(id => {

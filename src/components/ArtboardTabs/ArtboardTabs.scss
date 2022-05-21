@@ -1,0 +1,10 @@
+.ArtboardTabs {
+  padding: 0.5rem;
+  display: flex;
+  gap: 1rem;
+  border-bottom: 1px solid grey;
+  &__new-artboard {
+    display: flex;
+    gap: .5rem;
+  }
+}

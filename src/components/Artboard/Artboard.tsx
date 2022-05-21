@@ -5,11 +5,12 @@ import { Pixel } from "components";
 import { columnsAtom, pixelIdsSelector, saveImageAtom, showGridAtom } from "state";
 import './Artboard.scss'
 
-export const Artboard = () => {
+export const Artboard = ({id}: {id: string}) => {
+
   const artboardRef = useRef<HTMLDivElement>(null)
   const showGrid = useRecoilValue(showGridAtom)
   const cols = useRecoilValue(columnsAtom)
-  const pixelIds = useRecoilValue(pixelIdsSelector)
+  const pixelIds = useRecoilValue(pixelIdsSelector(id))
   const [saveImage, setSaveImage] = useRecoilState(saveImageAtom)
 
   useEffect(() => {
