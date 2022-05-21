@@ -18,7 +18,7 @@ function App() {
         <Artboard />
       </div>
       <div className='App__panel App__panel--right'>
-        {tool === 'fill' && <ColorPanel label='Brush Panel' />}
+        {tool === 'fill' && <ColorPanel label='Fill Panel' />}
         {tool === 'brush' && <ColorPanel label='Brush Panel' />}
         {tool === 'eraser' && <EraserPanel />}
         {tool === 'zoom' && <ZoomPanel />}

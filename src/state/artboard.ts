@@ -5,6 +5,7 @@ export const columnsAtom = atom({
   key: 'columnsAtom',
   default: 30,
 })
+
 export const rowsAtom = atom({
   key: 'rowsAtom',
   default: 30,
@@ -21,7 +22,7 @@ export const pixelIdsSelector = selector({
     const cols = get(columnsAtom)
     const rows = get(rowsAtom)
     const totalPixels = cols * rows
-    return Array.from({length: totalPixels}).map(_ => uuid())
+    return Array.from({length: totalPixels}, () => uuid())
   }
 })
 

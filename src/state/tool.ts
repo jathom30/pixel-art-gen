@@ -132,8 +132,8 @@ export const fillSelector = selector({
   get: () => '',
   set: ({get, set}, newColor) => {
     const ids = get(pixelIdsSelector)
-    const currentPixel = get(currentPixelAtom)
-    const currentColor = get(pixelColor(currentPixel))
+    const currentPixelId = get(currentPixelAtom)
+    const currentColor = get(pixelColor(currentPixelId))
     const coloredPixels = ids.filter(id => {
       const color = get(pixelColor(id))
       return color === currentColor
