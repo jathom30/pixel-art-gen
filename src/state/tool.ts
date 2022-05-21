@@ -43,7 +43,7 @@ export const canFillSelector = selector({
 
 export const eraserSizeAtom = atom({
   key: 'eraserSizeAtom',
-  default: 1,
+  default: 5,
 })
 
 export const pixelIdsWithinAreaSelector = selector({

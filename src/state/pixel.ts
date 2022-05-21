@@ -2,12 +2,12 @@ import { atom, atomFamily } from "recoil";
 
 export const pixelColor = atomFamily({
   key: 'pixelColorAtom',
-  default: 'white',
+  default: '#ffffff',
 })
 
 export const prevPixelColor = atomFamily({
   key: 'prevPixelColorAtom',
-  default: 'white',
+  default: '#ffffff',
 })
 
 export const pixelOpacity = atomFamily({
