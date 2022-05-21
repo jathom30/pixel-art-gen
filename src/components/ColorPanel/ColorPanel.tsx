@@ -2,9 +2,9 @@ import React from "react";
 import { CirclePicker, ColorResult, SketchPicker } from 'react-color';
 import { useRecoilState, useRecoilValue } from "recoil";
 import { brushColorAtom, presetColorsAtom } from "state";
-import './BrushPanel.scss'
+import './ColorPanel.scss'
 
-export const BrushPanel = () => {
+export const ColorPanel = ({label}: {label: string}) => {
   const [color, setColor] = useRecoilState(brushColorAtom)
   const presetColors = useRecoilValue(presetColorsAtom)
 
@@ -13,17 +13,17 @@ export const BrushPanel = () => {
   }
 
   return (
-    <div className="BrushPanel">
-      <h5>Brush Panel</h5>
-      <span className="BrushPanel__label">Color Picker</span>
+    <div className="ColorPanel">
+      <h5>{label}</h5>
+      <span className="ColorPanel__label">Color Picker</span>
       <SketchPicker
         color={color}
         onChange={handleChange}
         disableAlpha
         presetColors={[]}
       />
-      <span className="BrushPanel__label">Recently used</span>
-      <div className="BrushPanel__preset-colors">
+      <span className="ColorPanel__label">Recently used</span>
+      <div className="ColorPanel__preset-colors">
         <CirclePicker width="220px" colors={presetColors} onChange={handleChange} />
       </div>
     </div>

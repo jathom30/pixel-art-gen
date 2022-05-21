@@ -1,7 +1,7 @@
 import React from "react";
 import { faDownload, faEraser, faEye, faEyeSlash, faFill, faMagnifyingGlass, faPaintbrush, IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { saveImageAtom, selectedTool, showGridAtom } from "state";
 import { Button } from 'components';
 import { Tool } from "typings";
@@ -29,7 +29,7 @@ const tools: {label: Tool; icon: IconDefinition}[] = [
 export const ToolSelection = () => {
   const [tool, setTool] = useRecoilState(selectedTool)
   const [showGrid, setShowGrid] = useRecoilState(showGridAtom)
-  const setSaveImage = useSetRecoilState(saveImageAtom)
+  const [saveImage, setSaveImage] = useRecoilState(saveImageAtom)
 
   return (
     <div className="ToolSelection">
@@ -42,7 +42,7 @@ export const ToolSelection = () => {
         <Button kind="text" onClick={() => setShowGrid(prevShow => !prevShow)}>
           <FontAwesomeIcon icon={!showGrid ? faEye : faEyeSlash} />
         </Button>
-        <Button kind="primary" onClick={() => setSaveImage(true)}>
+        <Button isDisabled={saveImage} kind="primary" onClick={() => setSaveImage(true)}>
           <FontAwesomeIcon icon={faDownload} />
         </Button>
       </div>

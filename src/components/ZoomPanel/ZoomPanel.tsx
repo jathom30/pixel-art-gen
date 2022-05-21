@@ -1,15 +1,15 @@
 import React from "react";
 import { useRecoilValue } from "recoil";
 import { pixelColor, pixelIdsWithinAreaSelector } from "state";
-import './ZoomArea.scss'
+import './ZoomPanel.scss'
 
-export const ZoomArea = () => {
+export const ZoomPanel = () => {
   const zoomedPixels = useRecoilValue(pixelIdsWithinAreaSelector('zoom'))
 
   return (
-    <div className="ZoomArea">
-      <h5>Zoom Area</h5>
-      <div className="ZoomArea__grid">
+    <div className="ZoomPanel">
+      <h5>Zoom Panel</h5>
+      <div className="ZoomPanel__grid">
         {zoomedPixels.map(id => (
           <DisplayPixel key={id} id={id} />
         ))}

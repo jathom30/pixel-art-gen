@@ -1,10 +1,9 @@
 
 import React from 'react';
-import { Artboard, BrushPanel, EraserPanel, FillPanel, ToolSelection } from 'components';
+import { Artboard, EraserPanel, ToolSelection, ColorPanel, ZoomPanel } from 'components';
 import './App.scss';
 import { useRecoilValue } from 'recoil';
 import { selectedTool } from 'state';
-import { ZoomArea } from 'components/ZoomArea';
 
 
 function App() {
@@ -19,10 +18,10 @@ function App() {
         <Artboard />
       </div>
       <div className='App__panel App__panel--right'>
-        {tool === 'fill' && <FillPanel />}
-        {tool === 'brush' && <BrushPanel />}
+        {tool === 'fill' && <ColorPanel label='Brush Panel' />}
+        {tool === 'brush' && <ColorPanel label='Brush Panel' />}
         {tool === 'eraser' && <EraserPanel />}
-        {tool === 'zoom' && <ZoomArea />}
+        {tool === 'zoom' && <ZoomPanel />}
       </div>
     </div>
   );
