@@ -1,21 +1,27 @@
 import { atom, DefaultValue, selector, selectorFamily } from "recoil";
+import { recoilPersist } from "recoil-persist";
 import { Tool } from "typings";
 import { columnsAtom, pixelIdsSelector, rowsAtom } from "./artboard";
 import { currentPixelAtom, pixelColor, pixelOpacity, prevPixelColor } from "./pixel";
 
+const { persistAtom } = recoilPersist()
+
 export const selectedTool = atom<Tool>({
   key: 'selectedToolAtom',
-  default: 'brush'
+  default: 'brush',
+  effects: [persistAtom]
 })
 
 export const brushColorAtom = atom({
   key: 'brushColorAtom',
-  default: '#000000'
+  default: '#000000',
+  effects: [persistAtom]
 })
 
-export const presetColorsAtom = atom({
+export const presetColorsAtom = atom<string[]>({
   key: 'presetColorsAtom',
-  default: ['#000000', '#ffffff']
+  default: ['#000000', '#ffffff'],
+  effects: [persistAtom]
 })
 
 export const canBrushSelector = selector({
@@ -52,6 +58,7 @@ export const canZoomSelector = selector({
 export const eraserSizeAtom = atom({
   key: 'eraserSizeAtom',
   default: 5,
+  effects: [persistAtom],
 })
 
 export const pixelIdsWithinAreaSelector = selectorFamily<string[], 'eraser' | 'zoom'>({
