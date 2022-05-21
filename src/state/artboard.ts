@@ -24,3 +24,8 @@ export const pixelIdsSelector = selector({
     return Array.from({length: totalPixels}).map(_ => uuid())
   }
 })
+
+export const saveImageAtom = atom({
+  key: 'saveImageAtom',
+  default: false,
+})
