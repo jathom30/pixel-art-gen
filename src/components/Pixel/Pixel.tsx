@@ -1,6 +1,6 @@
 import React, { MouseEvent } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { brushColorAtom, canBrushSelector, canEraseSelector, currentPixelAtom, pixelColor, erasePixelsWithinAreaSelector, presetColorsAtom, pixelOpacity, prevPixelColor, canFillSelector, fillSelector, highlightPixelsWithinAreaSelector, canZoomSelector } from "state";
+import { brushColorAtom, canBrushSelector, canEraseSelector, currentPixelAtom, pixelColor, erasePixelsWithinAreaSelector, presetColorsAtom, pixelOpacity, prevPixelColor, canFillSelector, fillSelector, highlightPixelsWithinAreaSelector, canZoomSelector, isColorPickingAtom } from "state";
 import './Pixel.scss'
 
 export const Pixel = ({id}: {id: string}) => {
@@ -8,7 +8,8 @@ export const Pixel = ({id}: {id: string}) => {
   const [color, setColor] = useRecoilState(pixelColor(id))
   const [prevColor, setPrevColor] = useRecoilState(prevPixelColor(id))
   const [opacity, setOpacity] = useRecoilState(pixelOpacity(id))
-  const brushColor = useRecoilValue(brushColorAtom)
+  const [isPicking, setIsPicking] = useRecoilState(isColorPickingAtom)
+  const [brushColor, setBrushColor] = useRecoilState(brushColorAtom)
   const canBrush = useRecoilValue(canBrushSelector)
   const canErase = useRecoilValue(canEraseSelector)
   const canFill = useRecoilValue(canFillSelector)
@@ -19,6 +20,10 @@ export const Pixel = ({id}: {id: string}) => {
   const setFill = useSetRecoilState(fillSelector)
 
   const colorPixel = () => {
+    if (isPicking) {
+      setBrushColor(color)
+      setIsPicking(false)
+    }
     if (canFill) {
       setFill(brushColor)
     }
@@ -39,6 +44,9 @@ export const Pixel = ({id}: {id: string}) => {
   }
 
   const hoverPixel = () => {
+    if (isPicking) {
+      return
+    }
     if (canZoom) {
       setHighlightPixels({mouseLeave: false})
     }
@@ -75,6 +83,7 @@ export const Pixel = ({id}: {id: string}) => {
 
   const handleMouseLeave = (e: MouseEvent<HTMLDivElement>) => {
     const mouseDown = e.buttons === 1
+    if (isPicking) { return }
     if (canBrush) {
       const newColor = mouseDown ? brushColor : prevColor
       setColor(newColor)

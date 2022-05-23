@@ -54,6 +54,10 @@ export const canZoomSelector = selector({
     return tool === "zoom"
   }
 })
+export const isColorPickingAtom = atom({
+  key: 'isColorPickingAtom',
+  default: false,
+})
 
 export const eraserSizeAtom = atom({
   key: 'eraserSizeAtom',

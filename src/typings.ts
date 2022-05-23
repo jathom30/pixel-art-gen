@@ -1,1 +1,1 @@
-export type Tool = 'zoom' | 'brush' | 'fill' |'eraser'
+export type Tool = 'zoom' | 'brush' | 'fill' | 'eraser'
